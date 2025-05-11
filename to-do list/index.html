@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List UI with Character</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskList = document.querySelector('.task-list');
+            const taskInput = document.querySelector('.task-input input');
+            const addButton = document.querySelector('.task-input button');
+            const removeButton = document.querySelector('.remove-btn');
+            const modeToggle = document.querySelector('.mode-toggle');
+            const placeholder = document.querySelector('.placeholder');
+
+            function updatePlaceholder() {
+                placeholder.style.display = taskList.children.length === 0 ? 'block' : 'none';
+            }
+
+            addButton.addEventListener('click', () => {
+                if (taskInput.value.trim()) {
+                    const li = document.createElement('li');
+                    li.className = 'task-item';
+                    li.innerHTML = `
+                        <input type="checkbox">
+                        <span>${taskInput.value}</span>
+                        <div class="dots">⋮</div>
+                    `;
+                    taskList.appendChild(li);
+                    taskInput.value = '';
+
+                    li.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
+                        li.classList.toggle('completed', e.target.checked);
+                    });
+
+                    updatePlaceholder();
+                }
+            });
+
+            removeButton.addEventListener('click', () => {
+                const completedTasks = taskList.querySelectorAll('.task-item.completed');
+                completedTasks.forEach(task => task.remove());
+                updatePlaceholder();
+            });
+
+            modeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+            });
+
+            updatePlaceholder();
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-pic" style="background-image: url('https://via.placeholder.com/50?text=Character');"></div>
+            <div class="profile-info">
+                <h2>Abigail</h2>
+                <p>Level 23</p>
+            </div>
+        </div>
+        <div class="header">
+            <div class="date">May 4th</div>
+            <div class="tasks-label">Tasks:</div>
+        </div>
+        <div class="task-input">
+            <input type="text" placeholder="Add a new task...">
+            <button>Add</button>
+        </div>
+        <ul class="task-list"></ul>
+        <div class="placeholder">No tasks yet. Add a task to get started!</div>
+        <button class="remove-btn">Remove Completed</button>
+    </div>
+    <div class="leaf leaf1"></div>
+    <div class="leaf leaf2"></div>
+    <div class="leaf leaf3"></div>
+    <button class="mode-toggle">🌙</button>
+</body>
+</html>
